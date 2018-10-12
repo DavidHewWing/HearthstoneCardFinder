@@ -1,7 +1,9 @@
 package com.example.dhew6.intersect;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +43,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         dateTextView = findViewById(R.id.dateTextView);
-        patientTextSwitcher = findViewById(R.id.patientTextSwitcher);
 
         final String[] patientTexts = {"Destroying Monsters...", "Feeding Murlocs...", "Drinking Potions...",
         "Top-decking Lethal...", "Forging Decks...", "Cleaning Playing Board...", "Trimming Innkeepers Beard...",
@@ -55,26 +56,20 @@ public class SplashActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable(){
                     @Override
                     public void run(){
+
+                        TextSwitcher patientTextSwitcher = findViewById(R.id.patientTextSwitcher);
+                        patientTextSwitcher.setInAnimation(getApplicationContext(), android.R.anim.slide_in_left);
+                        patientTextSwitcher.setOutAnimation(getApplicationContext(), android.R.anim.slide_out_right);
+
                         Random random = new Random();
                         int x = random.nextInt(patientTexts.length);
-                        String text = patientTextSwitcher.getText().toString();
                         String replacement = patientTexts[x];
-                        if(text.equals(patientTexts[x])){
-                            if(text.equals(patientTexts[0])){
-                                int y = random.nextInt(patientTexts.length-1)+1;
-                                replacement=patientTexts[y];
-                            }
-                            else if(text.equals(patientTexts[patientTexts.length-1])){
-                                int z = random.nextInt(patientTexts.length-1);
-                                replacement=patientTexts[z];
-                            }
-                        }
                         patientTextSwitcher.setText(replacement);
                     }
                 });
             }
         };
-        timer.schedule(timerTask, 3000, 3000);
+        timer.schedule(timerTask, 0, 3000);
 
 
         new LongProcess().execute();
@@ -146,12 +141,18 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
 
+                    Log.d("List", list.toString());
+
                 }
+
+                Intent intent = new Intent(SplashActivity.this, GridActivity.class);
+                intent.putParcelableArrayListExtra("cards", list);
+                startActivity(intent);
+                finish();
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }
 }

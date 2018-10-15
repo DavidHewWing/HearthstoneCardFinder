@@ -15,7 +15,7 @@ public class GridActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
 
-        Log.d("data", dataList.toString());
+
 
     }
 }

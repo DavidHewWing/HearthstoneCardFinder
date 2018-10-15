@@ -10,17 +10,18 @@ import android.util.Log;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
@@ -109,10 +110,12 @@ public class SplashActivity extends AppCompatActivity {
 
                 JSONObject root = new JSONObject(s); //root
                 HashMap<String, HearthstoneCard> map = new HashMap<>(); //key is the name, value is the card (for searching)
-                ArrayList<HearthstoneCard> list = new ArrayList<>(); //list of the cards
+                //to avoid the Transaction Too Large Exception, I have split the cards into four different lists.
+                List<HearthstoneCard> list = new ArrayList<>(); //list of the cards
                 Iterator<String> keys = root.keys(); //iterator to loop through keys
 
                 while (keys.hasNext()) {
+
                     String key = keys.next();
                     JSONArray arr = root.getJSONArray(key); //get array
 
@@ -138,20 +141,15 @@ public class SplashActivity extends AppCompatActivity {
                         card = new HearthstoneCard(name, imgUrl, type, playerClass, cardSet);
                         list.add(card);
                         map.put(name, card);
-
                     }
-
-                    Log.d("List", list.toString());
-
                 }
 
                 Intent intent = new Intent(SplashActivity.this, GridActivity.class);
-                intent.putParcelableArrayListExtra("cards", list);
+                DataHolder.getInstance().setDataList(list);
                 startActivity(intent);
-                finish();
 
             } catch (JSONException e) {
-                e.printStackTrace();
+
             }
         }
     }

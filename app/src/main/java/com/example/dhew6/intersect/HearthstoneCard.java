@@ -1,11 +1,10 @@
 package com.example.dhew6.intersect;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class HearthstoneCard implements Parcelable{
+public class HearthstoneCard implements Serializable{
 
     private String name;
     private String imgURL;
@@ -61,13 +60,4 @@ public class HearthstoneCard implements Parcelable{
         this.cardSet = cardSet;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

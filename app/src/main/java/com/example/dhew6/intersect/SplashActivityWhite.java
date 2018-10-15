@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class SplashActivityWhite extends AppCompatActivity {
+
+    ArrayList<HearthstoneCard> list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

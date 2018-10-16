@@ -1,9 +1,8 @@
 package com.example.dhew6.intersect;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,17 +46,17 @@ public class SplashActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.dateTextView);
 
         final String[] patientTexts = {"Destroying Monsters...", "Feeding Murlocs...", "Drinking Potions...",
-        "Top-decking Lethal...", "Forging Decks...", "Cleaning Playing Board...", "Trimming Innkeepers Beard...",
-        "Polishing Shields...", "Sharpening Weapons...", "Sweeping Floors...", "Praying to RNGJesus..."};
+                "Top-decking Lethal...", "Forging Decks...", "Cleaning Playing Board...", "Trimming Innkeepers Beard...",
+                "Polishing Shields...", "Sharpening Weapons...", "Sweeping Floors...", "Praying to RNGJesus..."};
 
         Timer timer = new Timer();
         TimerTask timerTask;
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable(){
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void run(){
+                    public void run() {
 
                         TextSwitcher patientTextSwitcher = findViewById(R.id.patientTextSwitcher);
                         patientTextSwitcher.setInAnimation(getApplicationContext(), android.R.anim.slide_in_left);
@@ -111,7 +111,6 @@ public class SplashActivity extends AppCompatActivity {
                 JSONObject root = new JSONObject(s); //root
                 HashMap<String, HearthstoneCard> map = new HashMap<>(); //key is the name, value is the card (for searching)
                 //to avoid the Transaction Too Large Exception, I have split the cards into four different lists.
-                List<HearthstoneCard> list = new ArrayList<>(); //list of the cards
                 Iterator<String> keys = root.keys(); //iterator to loop through keys
 
                 while (keys.hasNext()) {
@@ -129,8 +128,9 @@ public class SplashActivity extends AppCompatActivity {
                         String cardSet = JO.getString("cardSet");
                         String imgUrl = null;
                         String playerClass = "";
+                        final int[] urlCode = {0};
 
-                        if(JO.has("playerClass")){
+                        if (JO.has("playerClass")) {
                             playerClass = JO.getString("playerClass");
                         }
 
@@ -138,18 +138,19 @@ public class SplashActivity extends AppCompatActivity {
                             imgUrl = JO.getString("img");
                         }
 
+
                         card = new HearthstoneCard(name, imgUrl, type, playerClass, cardSet);
-                        list.add(card);
                         map.put(name, card);
                     }
                 }
 
+                List<HearthstoneCard> list = new ArrayList<>(map.values());
                 Intent intent = new Intent(SplashActivity.this, GridActivity.class);
                 DataHolder.getInstance().setDataList(list);
                 startActivity(intent);
 
             } catch (JSONException e) {
-
+                e.printStackTrace();
             }
         }
     }

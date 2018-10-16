@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Intersect</string>
+    <string name="app_label">Hearthstone Card Finder</string>
+    <string name="search_hint">Enter a card name…</string>
+    <string name="search">Search</string>
 </resources>

@@ -11,7 +11,7 @@ public class DataHolder {
         this.dataList = dataList;
     }
 
-    public List<HearthstoneCard> getDataList() {
+    public List<HearthstoneCard> getDataSet() {
         return dataList;
     }
 
